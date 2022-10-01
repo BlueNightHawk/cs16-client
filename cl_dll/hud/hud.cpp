@@ -102,7 +102,7 @@ char *Q_buildnum( void )
 
 	for( m = 0; m < 11; m++ )
 	{
-		if( !strncasecmp( &date[0], mon[m], 3 ))
+		if( !strnicmp( &date[0], mon[m], 3 ))
 			break;
 		d += mond[m];
 	}
@@ -354,8 +354,6 @@ void CHud :: VidInit( void )
 			if( !m_rghSprites || !m_rgrcRects || !m_rgszSpriteNames )
 			{
 				gEngfuncs.pfnConsolePrint("CHud::VidInit(): Cannot allocate memory");
-				if( g_iXash )
-					gRenderAPI.Host_Error("CHud::VidInit(): Cannot allocate memory");
 			}
 
 			p = m_pSpriteList;
@@ -398,12 +396,6 @@ void CHud :: VidInit( void )
 
 	// assumption: number_1, number_2, etc, are all listed and loaded sequentially
 	m_HUD_number_0 = GetSpriteIndex( "number_0" );
-
-	if( m_HUD_number_0 == -1 && g_iXash )
-	{
-		gRenderAPI.Host_Error( "Failed to get number_0 sprite index. Check your game data!" );
-		return;
-	}
 
 	m_iFontHeight = GetSpriteRect(m_HUD_number_0).bottom - GetSpriteRect(m_HUD_number_0).top;
 

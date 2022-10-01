@@ -1,10 +1,9 @@
-#include "mathlib.h"
+#include "pm_math.h"
 #include "const.h"
 #include <math.h>
 /*
 * Globals initialization
 */
-vec3_t vec3_origin = {0, 0, 0};
 int nanmask = 255<<23;
 
 float anglemod(float a)
@@ -389,4 +388,17 @@ void VectorAngles(const vec_t *forward, vec_t *angles)
 	angles[0] = pitch;
 	angles[1] = yaw;
 	angles[2] = 0;
+}
+
+/*
+====================
+CrossProduct
+
+====================
+*/
+void CrossProduct( const float *v1, const float *v2, float *cross )
+{
+	cross[0] = v1[1] * v2[2] - v1[2] * v2[1];
+	cross[1] = v1[2] * v2[0] - v1[0] * v2[2];
+	cross[2] = v1[0] * v2[1] - v1[1] * v2[0];
 }

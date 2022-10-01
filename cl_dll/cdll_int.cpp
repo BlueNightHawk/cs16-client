@@ -32,11 +32,8 @@
 #include "vgui_parser.h"
 
 cl_enginefunc_t gEngfuncs = { };
-render_api_t gRenderAPI = { };
-mobile_engfuncs_t gMobileAPI = { };
 CHud gHUD;
-int g_iXash = 0; // indicates a buildnum
-int g_iMobileAPIVersion = 0;
+
 
 void InitInput (void);
 void Game_HookEvents( void );
@@ -56,8 +53,6 @@ int DLLEXPORT Initialize( cl_enginefunc_t *pEnginefuncs, int iVersion )
 		return 0;
 
 	gEngfuncs = *pEnginefuncs;
-
-	g_iXash = (int)CVAR_GET_FLOAT("build");
 
 	Game_HookEvents();
 
@@ -301,62 +296,4 @@ Called when a director event message was received
 void DLLEXPORT HUD_DirectorMessage( int iSize, void *pbuf )
 {
 	 gHUD.m_Spectator.DirectorMessage( iSize, pbuf );
-}
-
-/*
-==========================
-HUD_GetRenderInterface
-
-Called when Xash3D sends render api to us
-==========================
-*/
-
-int DLLEXPORT HUD_GetRenderInterface( int version, render_api_t *renderfuncs, render_interface_t *callback )
-{
-	if( version != CL_RENDER_INTERFACE_VERSION )
-	{
-		return false;
-	}
-
-	gRenderAPI = *renderfuncs;
-
-	// we didn't send callbacks to engine, because we don't use it
-	// *callback = renderInterface;
-
-	// we have here a Host_Error, so check Xash for version
-#ifdef __ANDROID__
-	if( g_iXash < 3224 )
-	{
-		gRenderAPI.Host_Error("Xash3D Android version check failed!\nPlease update your Xash3D Android!\n");
-	}
-#endif
-
-	return true;
-}
-
-/*
-========================
-HUD_MobilityInterface
-========================
-*/
-int DLLEXPORT HUD_MobilityInterface( mobile_engfuncs_t *mobileapi )
-{
-	if( mobileapi->version != MOBILITY_API_VERSION )
-	{
-		gEngfuncs.Con_Printf("Client Error: Mobile API version mismatch. Got: %i, want: %i\n",
-			mobileapi->version, MOBILITY_API_VERSION);
-
-#ifdef __ANDROID__
-		if( gRenderAPI.Host_Error )
-		{
-			gRenderAPI.Host_Error("Xash3D Android version check failed!\nPlease update your Xash3D Android!\n");
-		}
-#endif
-		return 1;
-	}
-
-	g_iMobileAPIVersion = MOBILITY_API_VERSION;
-	gMobileAPI = *mobileapi;
-
-	return 0;
 }

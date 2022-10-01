@@ -45,21 +45,16 @@ int CHudSniperScope::Init()
 
 int CHudSniperScope::VidInit()
 {
-	if( g_iXash == 0 )
-	{
-		ConsolePrint("^3No Xash Found Warning^7: CHudSniperScope is disabled!\n");
-		m_iFlags = 0;
-		return 0;
-	}
+	return 0;
 
-	m_iScopeArc[0] = gRenderAPI.GL_LoadTexture("sprites/scope_arc_nw.tga", NULL, 0, TF_NEAREST |TF_NOPICMIP|TF_NOMIPMAP|TF_CLAMP);
-	m_iScopeArc[1] = gRenderAPI.GL_LoadTexture("sprites/scope_arc_ne.tga", NULL, 0, TF_NEAREST |TF_NOPICMIP|TF_NOMIPMAP|TF_CLAMP);
-	m_iScopeArc[2] = gRenderAPI.GL_LoadTexture("sprites/scope_arc.tga",    NULL, 0, TF_NEAREST |TF_NOPICMIP|TF_NOMIPMAP|TF_CLAMP);
-	m_iScopeArc[3] = gRenderAPI.GL_LoadTexture("sprites/scope_arc_sw.tga", NULL, 0, TF_NEAREST |TF_NOPICMIP|TF_NOMIPMAP|TF_CLAMP);
+//	m_iScopeArc[0] = gRenderAPI.GL_LoadTexture("sprites/scope_arc_nw.tga", NULL, 0, TF_NEAREST |TF_NOPICMIP|TF_NOMIPMAP|TF_CLAMP);
+//	m_iScopeArc[1] = gRenderAPI.GL_LoadTexture("sprites/scope_arc_ne.tga", NULL, 0, TF_NEAREST |TF_NOPICMIP|TF_NOMIPMAP|TF_CLAMP);
+	//m_iScopeArc[2] = gRenderAPI.GL_LoadTexture("sprites/scope_arc.tga",    NULL, 0, TF_NEAREST |TF_NOPICMIP|TF_NOMIPMAP|TF_CLAMP);
+//	m_iScopeArc[3] = gRenderAPI.GL_LoadTexture("sprites/scope_arc_sw.tga", NULL, 0, TF_NEAREST |TF_NOPICMIP|TF_NOMIPMAP|TF_CLAMP);
 
 	if( !m_iScopeArc[0] || !m_iScopeArc[1] || !m_iScopeArc[2] || !m_iScopeArc[3] )
 	{
-		gRenderAPI.Host_Error( "^3Error^7: Cannot load Sniper Scope arcs. Check sprites/scope_arc*.tga files\n" );
+	//	gRenderAPI.Host_Error( "^3Error^7: Cannot load Sniper Scope arcs. Check sprites/scope_arc*.tga files\n" );
 	}
 	left = (TrueWidth - TrueHeight)/2;
 	right = left + TrueHeight;
@@ -77,18 +72,17 @@ int CHudSniperScope::Draw(float flTime)
 	gEngfuncs.pTriAPI->Color4ub(0, 0, 0, 255);
 	gEngfuncs.pTriAPI->CullFace(TRI_NONE);
 
-	gRenderAPI.GL_SelectTexture(0);
 
-	gRenderAPI.GL_Bind(0, m_iScopeArc[0]);
+	//gRenderAPI.GL_Bind(0, m_iScopeArc[0]);
 	DrawUtils::Draw2DQuad(left, 0, centerx, centery);
 
-	gRenderAPI.GL_Bind(0, m_iScopeArc[1]);
+	//gRenderAPI.GL_Bind(0, m_iScopeArc[1]);
 	DrawUtils::Draw2DQuad(centerx, 0, right, centery);
 
-	gRenderAPI.GL_Bind(0, m_iScopeArc[2]);
+	//gRenderAPI.GL_Bind(0, m_iScopeArc[2]);
 	DrawUtils::Draw2DQuad(centerx, centery, right, TrueHeight);
 
-	gRenderAPI.GL_Bind(0, m_iScopeArc[3]);
+	//gRenderAPI.GL_Bind(0, m_iScopeArc[3]);
 	DrawUtils::Draw2DQuad(left, centery, centerx, TrueHeight);
 
 	FillRGBABlend( 0, 0, (ScreenWidth - ScreenHeight) / 2 + 2, ScreenHeight, 0, 0, 0, 255 );
@@ -105,6 +99,6 @@ int CHudSniperScope::Draw(float flTime)
 
 void CHudSniperScope::Shutdown()
 {
-	for( int i = 0; i < 4; i++ )
-		gRenderAPI.GL_FreeTexture( m_iScopeArc[i] );
+	//for( int i = 0; i < 4; i++ )
+	//	gRenderAPI.GL_FreeTexture( m_iScopeArc[i] );
 }

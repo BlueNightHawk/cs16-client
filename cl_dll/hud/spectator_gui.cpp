@@ -109,23 +109,16 @@ int CHudSpectatorGui::Init()
 
 int CHudSpectatorGui::VidInit()
 {
-	if( !g_iXash )
-	{
-		ConsolePrint("Warning: CHudSpectatorGui is disabled! Dude, are you running me on old GoldSrc?\n");
-		m_iFlags = 0;
-		return 0;
-	}
-
 	m_fTextScale = ScreenWidth / 1024.0f;
 	if( m_fTextScale < 1.0f )
 		m_fTextScale = 1.0f;
-	m_hTimerTexture = gRenderAPI.GL_LoadTexture("gfx/vgui/timer.tga", NULL, 0, TF_NEAREST |TF_NOPICMIP|TF_NOMIPMAP|TF_CLAMP );
+	//m_hTimerTexture = gRenderAPI.GL_LoadTexture("gfx/vgui/timer.tga", NULL, 0, TF_NEAREST |TF_NOPICMIP|TF_NOMIPMAP|TF_CLAMP );
 	return 1;
 }
 
 void CHudSpectatorGui::Shutdown()
 {
-	gRenderAPI.GL_FreeTexture( m_hTimerTexture );
+//	gRenderAPI.GL_FreeTexture( m_hTimerTexture );
 }
 
 inline void DrawButtonWithText( int x1, int y1, int wide, int tall, const char *sz, int r, int g, int b )
@@ -176,8 +169,8 @@ int CHudSpectatorGui::Draw( float flTime )
 		{
 			if( m_hTimerTexture )
 			{
-				gRenderAPI.GL_SelectTexture( 0 );
-				gRenderAPI.GL_Bind(0, m_hTimerTexture);
+			//	gRenderAPI.GL_SelectTexture( 0 );
+			//	gRenderAPI.GL_Bind(0, m_hTimerTexture);
 				gEngfuncs.pTriAPI->RenderMode( kRenderTransAlpha );
 				DrawUtils::Draw2DQuad( (INT_XPOS(12.5) + 10) * gHUD.m_flScale,
 									   (INT_YPOS(2) * 0.5) * gHUD.m_flScale,
@@ -361,122 +354,19 @@ int CHudSpectatorGui::MsgFunc_SpecHealth2(const char *pszName, int iSize, void *
 
 void CHudSpectatorGui::UserCmd_ToggleSpectatorMenu()
 {
-	static byte color[4] = {0, 0, 0, 0};
-
-	if( !g_iMobileAPIVersion )
-		return;
-
-	gMobileAPI.pfnTouchSetClientOnly( !(m_menuFlags & ROOT_MENU) );
-
-	if( !(m_menuFlags & ROOT_MENU) )
-	{
-		m_menuFlags |= ROOT_MENU;
-
-		gMobileAPI.pfnTouchAddClientButton( "_spec_menu_options", "*white", "_spec_toggle_menu_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 0.5f, 8.5f ), color, 0, 1.0f, 0 );
-
-		gMobileAPI.pfnTouchAddClientButton( "_spec_menu_find_next_player_reverse", "*white", "_spec_find_next_player_reverse",
-			XPOS(5.0f), YPOS(8.5f), XPOS(6.0f), YPOS(9.5f), color, 0, 1.0f, 0 );
-
-		gMobileAPI.pfnTouchAddClientButton( "_spec_menu_find_next_player", "*white", "_spec_find_next_player",
-			XPOS(10.0f),YPOS(8.5f), XPOS(11.0f),YPOS(9.5f), color, 0, 1.0f, 0 );
-
-		gMobileAPI.pfnTouchAddClientButton( "_spec_menu_spectate_options", "*white", "_spec_toggle_menu_spectate_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 11.5f, 8.5f ),color, 0, 1.0f, 0 );
-	}
-	else
-	{
-		m_menuFlags &= ~ROOT_MENU;
-		m_menuFlags &= ~MENU_OPTIONS;
-		m_menuFlags &= ~MENU_OPTIONS_SETTINGS;
-		m_menuFlags &= ~MENU_SPEC_OPTIONS;
-		gMobileAPI.pfnTouchRemoveButton( "_spec_*" );
-	}
 }
 
 void CHudSpectatorGui::UserCmd_ToggleSpectatorMenuOptions()
 {
-	static byte color[4] = {0, 0, 0, 0};
 
-	if( !(m_menuFlags & ROOT_MENU) || !g_iMobileAPIVersion )
-		return;
-
-	if( !(m_menuFlags & MENU_OPTIONS) )
-	{
-		m_menuFlags |= MENU_OPTIONS;
-		gMobileAPI.pfnTouchAddClientButton( "_spec_opt_close", "*white", "_spec_toggle_menu",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 0.5f, 2.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_opt_help", "*white", "spec_help; _spec_toggle_menu_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 0.5f, 3.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_opt_settings", "*white", "_spec_toggle_menu_options_settings",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 0.5f, 4.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_opt_pip", "*white", "toggle spec_pip_internal; _spec_toggle_menu_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 0.5f, 5.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_opt_ad", "*white", "toggle spec_autodirector_internal; _spec_toggle_menu_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 0.5f, 6.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_opt_showscores", "*white", "scoreboard; _spec_toggle_menu_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 0.5f, 7.5f ), color, 0, 1.0f, 0 );
-	}
-	else
-	{
-		m_menuFlags &= ~MENU_OPTIONS;
-		m_menuFlags &= ~MENU_OPTIONS_SETTINGS;
-		gMobileAPI.pfnTouchRemoveButton( "_spec_opt_*" );
-	}
 }
 
 void CHudSpectatorGui::UserCmd_ToggleSpectatorMenuOptionsSettings()
 {
-	static byte color[4] = {0, 0, 0, 0};
 
-	if( !(m_menuFlags & ROOT_MENU) || !g_iMobileAPIVersion )
-		return;
-
-	if( !(m_menuFlags & MENU_OPTIONS_SETTINGS) )
-	{
-		m_menuFlags |= MENU_OPTIONS_SETTINGS;
-		gMobileAPI.pfnTouchAddClientButton( "_spec_opt_chat_msgs", "*white", "messagemode; _spec_toggle_menu_options_settings",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 4.5f, 4.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_opt_set_status", "*white", "toggle spec_drawstatus_internal; _spec_toggle_menu_options_settings",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 4.5f, 5.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_opt_draw_cones", "*white", "toggle spec_drawcone_internal; _spec_toggle_menu_options_settings",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 4.5f, 6.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_opt_draw_names", "*white", "toggle spec_drawnames_internal; _spec_toggle_menu_options_settings",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 4.5f, 7.5f ), color, 0, 1.0f, 0 );
-	}
-	else
-	{
-		m_menuFlags &= ~MENU_OPTIONS_SETTINGS;
-		gMobileAPI.pfnTouchRemoveButton( "_spec_opt_set_*" );
-	}
 }
 
 void CHudSpectatorGui::UserCmd_ToggleSpectatorMenuSpectateOptions()
 {
-	static byte color[4] = {0, 0, 0, 0};
 
-	if( !(m_menuFlags & ROOT_MENU) || !g_iMobileAPIVersion )
-		return;
-
-	if( !(m_menuFlags & MENU_SPEC_OPTIONS) )
-	{
-		m_menuFlags |= MENU_SPEC_OPTIONS;
-		gMobileAPI.pfnTouchAddClientButton( "_spec_spec_6", "*white", "spec_mode 6; _spec_toggle_menu_spectate_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 11.5f, 2.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_spec_5", "*white", "spec_mode 5; _spec_toggle_menu_spectate_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 11.5f, 3.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_spec_4", "*white", "spec_mode 4; _spec_toggle_menu_spectate_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 11.5f, 4.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_spec_3", "*white", "spec_mode 3; _spec_toggle_menu_spectate_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 11.5f, 5.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_spec_2", "*white", "spec_mode 2; _spec_toggle_menu_spectate_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 11.5f, 6.5f ), color, 0, 1.0f, 0 );
-		gMobileAPI.pfnTouchAddClientButton( "_spec_spec_1", "*white", "spec_mode 1; _spec_toggle_menu_spectate_options",
-			PLACE_DEFAULT_SIZE_BUTTON_AT_X_Y( 11.5f, 7.5f ), color, 0, 1.0f, 0 );
-	}
-	else
-	{
-		m_menuFlags &= ~MENU_SPEC_OPTIONS;
-		gMobileAPI.pfnTouchRemoveButton( "_spec_spec_*" );
-	}
 }

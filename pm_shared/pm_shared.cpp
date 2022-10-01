@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "mathlib.h"
+#include "pm_math.h"
 #include "const.h"
 #include "usercmd.h"
 #include "pm_defs.h"
@@ -36,6 +36,8 @@
 	float vJumpOrigin[3];
 	float vJumpAngles[3];
 #endif
+
+const vec3_t vec3_origin = { 0, 0, 0 };
 
 /*
 * Globals initialization

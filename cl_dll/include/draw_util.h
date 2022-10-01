@@ -138,10 +138,7 @@ public:
 	static inline int TextMessageDrawChar( int x, int y, int number, int r, int g, int b, float scale = 0.0f )
 	{
 		int ret;
-		if( scale && g_iMobileAPIVersion )
-			ret = gMobileAPI.pfnDrawScaledCharacter( x, y, number, r, g, b, scale ) / gHUD.m_flScale;
-		else
-			ret = gEngfuncs.pfnDrawCharacter( x, y, number, r, g, b );
+		ret = gEngfuncs.pfnDrawCharacter( x, y, number, r, g, b );
 		return ret;
 	}
 

@@ -1352,7 +1352,16 @@ void CStudioModelRenderer::StudioRenderFinal_Hardware(void)
 
 			IEngineStudio.GL_SetRenderMode(rendermode);
 			IEngineStudio.StudioSetRenderamt(m_pCurrentEntity->curstate.renderamt);
-			IEngineStudio.StudioDrawPoints();
+
+			if ( m_pCurrentEntity == gEngfuncs.GetViewModel( ) && ( gHUD.cl_righthand->value ) )
+			{
+				gEngfuncs.pTriAPI->CullFace( TRI_NONE );
+			}
+			IEngineStudio.StudioDrawPoints( );
+			if ( m_pCurrentEntity == gEngfuncs.GetViewModel( ) && ( gHUD.cl_righthand->value ) )
+			{
+				gEngfuncs.pTriAPI->CullFace( TRI_FRONT );
+			}
 		}
 	}
 

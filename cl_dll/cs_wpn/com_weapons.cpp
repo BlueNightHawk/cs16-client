@@ -46,7 +46,7 @@ void COM_Log( char *pszFile, char *fmt, ...)
 	va_list		argptr;
 	char		string[1024];
 	FILE *fp;
-	char *pfilename;
+	const char *pfilename;
 	
 	if ( !pszFile )
 	{
@@ -149,20 +149,6 @@ HUD_SetMaxSpeed
 */
 void HUD_SetMaxSpeed( const edict_t *ed, float speed )
 {
-}
-
-
-/*
-=====================
-UTIL_WeaponTimeBase
-
-Always 0.0 on client, even if not predicting weapons ( won't get called
- in that case )
-=====================
-*/
-float UTIL_WeaponTimeBase( void )
-{
-	return 0.0;
 }
 
 static unsigned int glSeed = 0; 

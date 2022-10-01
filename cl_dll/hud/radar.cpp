@@ -154,7 +154,7 @@ int CHudRadar::InitBuiltinTextures( void )
 	{ "radarflippedT", (byte*)r_RadarFlippedT, &hFlippedT, 8, 8, Radar_InitBitmap, TEX_CUSTOM }
 	};
 	size_t	i, num_builtin_textures = sizeof( textures ) / sizeof( textures[0] );
-
+#if 0
 	for( i = 0; i < num_builtin_textures; i++ )
 	{
 		textures[i].init( textures[i].w, textures[i].h, textures[i].buf );
@@ -172,7 +172,7 @@ int CHudRadar::InitBuiltinTextures( void )
 	}
 
 	hDot = gRenderAPI.GL_LoadTexture( "*white", NULL, 0, 0 );
-
+#endif
 	bTexturesInitialized = true;
 
 	return 1;
@@ -183,15 +183,15 @@ void CHudRadar::Shutdown( void )
 	// GL_FreeTexture( hDot ); engine inner texture
 	if( bTexturesInitialized )
 	{
-		gRenderAPI.GL_FreeTexture( hT );
-		gRenderAPI.GL_FreeTexture( hFlippedT );
-		gRenderAPI.GL_FreeTexture( hCross );
+		//gRenderAPI.GL_FreeTexture( hT );
+	//	gRenderAPI.GL_FreeTexture( hFlippedT );
+		//gRenderAPI.GL_FreeTexture( hCross );
 	}
 }
 
 int CHudRadar::VidInit(void)
 {
-	bUseRenderAPI = g_iXash && InitBuiltinTextures();
+	bUseRenderAPI = false; // g_iXash && InitBuiltinTextures();
 
 	m_hRadar.SetSpriteByName( "radar" );
 	m_hRadarOpaque.SetSpriteByName( "radaropaque" );
@@ -307,7 +307,7 @@ int CHudRadar::Draw(float flTime)
 		gEngfuncs.pTriAPI->RenderMode( kRenderTransAdd );
 		gEngfuncs.pTriAPI->CullFace( TRI_NONE );
 		gEngfuncs.pTriAPI->Brightness( 1 );
-		gRenderAPI.GL_SelectTexture( 0 );
+		//gRenderAPI.GL_SelectTexture( 0 );
 	}
 
 	for(int i = 0; i < 33; i++)
@@ -393,7 +393,7 @@ void CHudRadar::DrawPlayerLocation()
 
 inline void CHudRadar::DrawColoredTexture( int x, int y, int size, byte r, byte g, byte b, byte a, int texHandle )
 {
-	gRenderAPI.GL_Bind( 0, texHandle );
+	//gRenderAPI.GL_Bind( 0, texHandle );
 	gEngfuncs.pTriAPI->Color4ub( r, g, b, a );
 	DrawUtils::Draw2DQuad( (iMaxRadius + x - size * 2) * gHUD.m_flScale,
 						   (iMaxRadius + y - size * 2) * gHUD.m_flScale,

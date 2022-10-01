@@ -7,10 +7,13 @@
 
 // view/refresh setup functions
 
+
 #include <string.h>
 
 #include "hud.h"
-#include "pm_math.h"
+
+#include "mathlib.h"
+
 #include "cl_util.h"
 #include "cvardef.h"
 #include "usercmd.h"
@@ -404,7 +407,7 @@ void V_CalcViewRoll ( struct ref_params_s *pparams )
 	if ( !viewentity )
 		return;
 
-	side = V_CalcRoll ( viewentity->angles, pparams->simvel, pparams->movevars->rollangle, pparams->movevars->rollspeed );
+	side = V_CalcRoll ( viewentity->angles, pparams->simvel, 3, 300 );
 
 	pparams->viewangles[ROLL] += side;
 
@@ -678,6 +681,8 @@ void V_CalcNormalRefdef ( struct ref_params_s *pparams )
 	// gun a very nice 'shifting' effect when the player looks up/down. If there is a problem
 	// with view model distortion, this may be a cause. (SJB).
 	view->origin[2] -= 1;
+
+	VectorCopy( view->angles, view->curstate.angles );
 
 	// fudge position around to keep amount of weapon visible
 	// roughly equal with different FOV

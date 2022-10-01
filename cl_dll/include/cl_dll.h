@@ -93,8 +93,4 @@ void       DLLEXPORT IN_ClientLookEvent( float relyaw, float relpitch );
 
 
 extern cl_enginefunc_t gEngfuncs;
-extern render_api_t gRenderAPI;
-extern mobile_engfuncs_t gMobileAPI;
-extern int g_iXash; // indicates buildnum
-extern int g_iMobileAPIVersion; // indicates version. 0 if no mobile API
 #endif // CL_DLL_H

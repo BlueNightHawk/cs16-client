@@ -32,12 +32,32 @@
 #pragma once
 #endif
 
+typedef float vec_t;
+#ifndef vec3_t
+typedef vec_t vec3_t[3];
+#endif
+typedef vec_t vec4_t[4]; // x,y,z,w
+typedef vec_t vec5_t[5];
+
 #define PITCH	0	// up/down
 #define YAW	1	// left/right
 #define ROLL	2	// fall over
 
-extern vec3_t vec3_origin;
 extern int nanmask;
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846 // matches value in gcc v2 math.h
+#endif
+
+#ifndef VECTOR_H
+#define DotProduct( x, y ) ( ( x )[0] * ( y )[0] + ( x )[1] * ( y )[1] + ( x )[2] * ( y )[2] )
+#endif
+#define VectorSubtract( a, b, c )       \
+	{                                   \
+		( c )[0] = ( a )[0] - ( b )[0]; \
+		( c )[1] = ( a )[1] - ( b )[1]; \
+		( c )[2] = ( a )[2] - ( b )[2]; \
+	}
 
 #define IS_NAN(x)	((*reinterpret_cast<int *>(&(x)) & nanmask) == nanmask)
 
@@ -68,5 +88,31 @@ void  VectorScale(const vec_t *in, vec_t scale, vec_t *out);
 int   Q_log2(int val);
 void  VectorMatrix(vec_t *forward, vec_t *right, vec_t *up);
 void  VectorAngles(const vec_t *forward, vec_t *angles);
+
+#define VectorSubtract( a, b, c )       \
+	{                                   \
+		( c )[0] = ( a )[0] - ( b )[0]; \
+		( c )[1] = ( a )[1] - ( b )[1]; \
+		( c )[2] = ( a )[2] - ( b )[2]; \
+	}
+#define VectorAdd( a, b, c )            \
+	{                                   \
+		( c )[0] = ( a )[0] + ( b )[0]; \
+		( c )[1] = ( a )[1] + ( b )[1]; \
+		( c )[2] = ( a )[2] + ( b )[2]; \
+	}
+#define VectorCopy( a, b )   \
+	{                        \
+		( b )[0] = ( a )[0]; \
+		( b )[1] = ( a )[1]; \
+		( b )[2] = ( a )[2]; \
+	}
+#define VectorClear( a ) \
+	{                    \
+		( a )[0] = 0.0;  \
+		( a )[1] = 0.0;  \
+		( a )[2] = 0.0;  \
+	}
+void CrossProduct( const vec3_t v1, const vec3_t v2, vec3_t cross );
 
 #endif // PM_MATH_H
